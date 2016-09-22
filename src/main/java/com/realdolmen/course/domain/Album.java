@@ -1,6 +1,7 @@
 package com.realdolmen.course.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.*;
 
 @Entity
@@ -14,6 +15,9 @@ public class Album {
 
     private String title;
 
+    @Pattern(regexp = "[0-9][0-9][0-9][0-9]")
+    private String year;
+
     @ManyToOne
     @XmlTransient
     private Artist artist;
@@ -23,6 +27,12 @@ public class Album {
 
     public Album(String title) {
         this.title = title;
+    }
+
+    public Album(String title, String year, Artist artist) {
+        this.title = title;
+        this.year = year;
+        this.artist = artist;
     }
 
     public Album(Integer id, String title) {
@@ -52,5 +62,13 @@ public class Album {
 
     public void setArtist(Artist artist) {
         this.artist = artist;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 }

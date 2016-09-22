@@ -4,10 +4,7 @@ import com.realdolmen.course.domain.Album;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/albums")
@@ -19,8 +16,11 @@ public class AlbumRestServiceEndpoint {
     private ArtistStuff artistStuff;
 
     @GET
-    public AlbumList findAll() {
-        return new AlbumList(artistStuff.getAlbums());
+    public AlbumList findAll(@QueryParam("year") String year){
+        if(year == null || year.isEmpty()){
+            return new AlbumList(artistStuff.getAlbums());
+        }
+        return new AlbumList(artistStuff.findAlbumByYear(year));
     }
 
     @GET

@@ -28,10 +28,10 @@ public class ArtistStuff {
         abba.setAlbums(
                 new ArrayList<>(
                         Arrays.asList(
-                                em.merge(new Album("Waterloo")),
-                                em.merge(new Album("The Visitors")),
-                                em.merge(new Album("Gold")),
-                                em.merge(new Album("Ring Ring"))
+                                em.merge(new Album("Waterloo", "1974", abba)),
+                                em.merge(new Album("The Visitors", "1981", abba)),
+                                em.merge(new Album("Gold", "1992", abba)),
+                                em.merge(new Album("Ring Ring", "1973", abba))
                         )
                 )
         );
@@ -41,7 +41,7 @@ public class ArtistStuff {
 
         fleetwood.setAlbums(
                 Arrays.asList(
-                    em.merge(new Album("Rumours"))
+                    em.merge(new Album("Rumours", "1977", fleetwood))
                 )
         );
 
@@ -50,9 +50,9 @@ public class ArtistStuff {
 
         hoover.setAlbums(
             Arrays.asList(
-                em.merge(new Album("The Magnificent Tree")),
-                em.merge(new Album("No more sweet music")),
-                em.merge(new Album("Blue Wonder Power Milk"))
+                em.merge(new Album("The Magnificent Tree", "2000", hoover)),
+                em.merge(new Album("No more sweet music", "2005", hoover)),
+                em.merge(new Album("Blue Wonder Power Milk", "1998", hoover))
             )
         );
     }
@@ -63,32 +63,19 @@ public class ArtistStuff {
 
     public List<Album> getAlbums() {
         return em.createQuery("SELECT a FROM Album a", Album.class).getResultList();
-        /*ArrayList<Album> albums = new ArrayList<>();
-        for (Artist artist : this.artistList) {
-            albums.addAll(artist.getAlbums());
-        }
-        return albums;*/
     }
 
     public Album albumById(Integer id) {
         return em.find(Album.class, id);
-        /*for (Album album : this.getAlbums()) {
-            if (album.getId().equals(id)) {
-                return album;
-            }
-        }
-        return null;*/
     }
 
     public Artist addArtist(ArtistCreateDTO artistDTO) {
         Artist artist = new Artist(artistDTO.getName());
-        //this.artistList.add(artist);
         em.persist(artist);
         return artist;
     }
 
     public Artist updateArtist(Integer id, ArtistUpdateDTO artistDTO) {
-
         Artist artist = em.find(Artist.class, id);
         artist.setName(artistDTO.getName());
 
@@ -100,5 +87,11 @@ public class ArtistStuff {
     public void deleteArtist(Integer id) {
         em.remove(em.find(Artist.class, id));
         //this.artistList.remove((int) --id);
+    }
+
+    public List<Album> findAlbumByYear(String year){
+        return em.createQuery("SELECT a FROM Album a WHERE a.year = :year", Album.class)
+                .setParameter("year", year)
+                .getResultList();
     }
 }
