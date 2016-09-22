@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by VCLBB37 on 22/09/2016.
- */
 @Singleton
 public class ArtistStuff {
 
@@ -82,6 +79,12 @@ public class ArtistStuff {
     public Artist addArtist(ArtistCreateDTO artistDTO) {
         Artist artist = new Artist(++artistId, artistDTO.getName());
         this.artistList.add(artist);
+        return artist;
+    }
+
+    public Artist updateArtist(Integer id, ArtistUpdateDTO artistDTO) {
+        Artist artist = this.artistList.get(--id);
+        artist.setName(artistDTO.getName());
         return artist;
     }
 }

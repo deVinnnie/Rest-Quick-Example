@@ -34,6 +34,45 @@ public class ArtistRestServiceEndpoint {
         return artistsStuff.getArtists().get(--id);
     }
 
+
+    /**
+     * Example JSON payload:
+     * {
+     *     "name" : "First Aid Kit"
+     * }
+     *
+     * @param artistDTO
+     * @return
+     */
+    @PUT
+    @Path("{id : \\d+}")
+    @Consumes(value = MediaType.APPLICATION_JSON)
+    public Response updateArtist(@PathParam("id") Integer id, ArtistUpdateDTO artistDTO) {
+        Artist artist = artistsStuff.updateArtist(id, artistDTO);
+
+        // Build URI which references the location of the new resource.
+        UriBuilder uriBuilder = uriInfo.getBaseUriBuilder();
+        URI location = uriBuilder.path("artists")
+                .path("{id}")
+                .build(artist.getId());
+
+        // Return 201 Response
+        Response.ResponseBuilder builder = Response.ok();
+        Response response = builder.status(Response.Status.OK)
+                .location(location)
+                .build();
+        return response;
+    }
+
+    /**
+     * Example JSON payload:
+     * {
+     *     "name" : "First Aid Kit"
+     * }
+     *
+     * @param artistDTO
+     * @return
+     */
     @POST
     @Consumes(value = MediaType.APPLICATION_JSON)
     public Response createArtist(ArtistCreateDTO artistDTO) {
@@ -52,5 +91,7 @@ public class ArtistRestServiceEndpoint {
                 .build();
         return response;
     }
+
+
 
 }

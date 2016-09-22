@@ -3,9 +3,6 @@ package com.realdolmen.course.domain;
 import javax.persistence.*;
 import javax.xml.bind.annotation.*;
 
-/**
- * Created by VCLBB37 on 22/09/2016.
- */
 @Entity
 @XmlRootElement
 @XmlAccessorType(value = XmlAccessType.FIELD)
