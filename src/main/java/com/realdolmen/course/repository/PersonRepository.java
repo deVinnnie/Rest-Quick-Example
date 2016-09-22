@@ -13,7 +13,7 @@ import java.util.List;
 public class PersonRepository {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "MyPersistenceUnit")
     EntityManager em;
 
     public Person save(Person person) {

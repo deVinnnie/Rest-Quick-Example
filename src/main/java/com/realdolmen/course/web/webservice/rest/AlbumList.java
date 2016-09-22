@@ -13,15 +13,15 @@ import java.util.List;
  */
 @XmlRootElement(name = "albums")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AlbumtList {
+public class AlbumList {
 
     @XmlElement(name = "album")
     private List<Album> albums;
 
-    public AlbumtList() {
+    public AlbumList() {
     }
 
-    public AlbumtList(List<Album> albums) {
+    public AlbumList(List<Album> albums) {
         this.albums = albums;
     }
 

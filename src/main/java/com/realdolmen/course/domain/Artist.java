@@ -16,7 +16,7 @@ public class Artist {
 
     private String name;
 
-    @OneToMany(mappedBy = "artist")
+    @OneToMany(mappedBy = "artist", fetch = FetchType.EAGER)
     @XmlElementRef()
     private List<Album> albums = new ArrayList<Album>();
 

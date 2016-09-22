@@ -30,6 +30,13 @@ public class ArtistRestServiceEndpoint {
     @GET
     @Path("{id : \\d+}")
     public Artist find(@PathParam("id") Integer id){
+        if(id < 0 || id >= artistsStuff.getArtists().size()){
+            Response.ResponseBuilder builder = Response.ok();
+            Response response = builder.status(404)
+                    .entity("404 Not Found")
+                    .build();
+            throw new WebApplicationException(response);
+        }
         return artistsStuff.getArtists().get(--id);
     }
 

@@ -5,7 +5,8 @@ import com.realdolmen.course.domain.Artist;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
-import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,80 +16,89 @@ public class ArtistStuff {
 
     private ArrayList<Artist> artistList = new ArrayList<>();
 
-    private int artistId = 0;
+
+    @PersistenceContext(unitName = "InMemory")
+    private EntityManager em;
 
     @PostConstruct
     public void setUp() {
-        this.artistList = new ArrayList<>(
-                Arrays.asList(
-                        new Artist(++artistId, "ABBA"),
-                        new Artist(++artistId, "Fleetwood Mac"),
-                        new Artist(++artistId, "Hooverphonic")
-                )
-        );
+        Artist abba = new Artist("ABBA");
+        em.persist(abba);
 
-        artistList.get(0).setAlbums(
+        abba.setAlbums(
                 new ArrayList<>(
                         Arrays.asList(
-                                new Album(11, "Waterloo"),
-                                new Album(12, "The Visitors"),
-                                new Album(13, "Gold"),
-                                new Album(14, "Ring Ring")
+                                em.merge(new Album("Waterloo")),
+                                em.merge(new Album("The Visitors")),
+                                em.merge(new Album("Gold")),
+                                em.merge(new Album("Ring Ring"))
                         )
                 )
         );
 
-        for (Album album : artistList.get(0).getAlbums()) {
-            album.setArtist(artistList.get(0));
-        }
+        Artist fleetwood = new Artist("Fleetwood Mac");
+        em.persist(fleetwood);
 
-        artistList.get(2).setAlbums(
+        fleetwood.setAlbums(
                 Arrays.asList(
-                        new Album(22, "The Magnificent Tree"),
-                        new Album(23, "No more sweet music"),
-                        new Album(24, "Blue Wonder Power Milk")
+                    em.merge(new Album("Rumours"))
                 )
         );
 
-        for (Album album : artistList.get(2).getAlbums()) {
-            album.setArtist(artistList.get(2));
-        }
+        Artist hoover = new Artist("Hooverphonic");
+        em.persist(hoover);
+
+        hoover.setAlbums(
+            Arrays.asList(
+                em.merge(new Album("The Magnificent Tree")),
+                em.merge(new Album("No more sweet music")),
+                em.merge(new Album("Blue Wonder Power Milk"))
+            )
+        );
     }
 
     public List<Artist> getArtists() {
-        return this.artistList;
+        return em.createQuery("SELECT a FROM Artist a", Artist.class).getResultList();
     }
 
     public List<Album> getAlbums() {
-        ArrayList<Album> albums = new ArrayList<>();
+        return em.createQuery("SELECT a FROM Album a", Album.class).getResultList();
+        /*ArrayList<Album> albums = new ArrayList<>();
         for (Artist artist : this.artistList) {
             albums.addAll(artist.getAlbums());
         }
-        return albums;
+        return albums;*/
     }
 
     public Album albumById(Integer id) {
-        for (Album album : this.getAlbums()) {
+        return em.find(Album.class, id);
+        /*for (Album album : this.getAlbums()) {
             if (album.getId().equals(id)) {
                 return album;
             }
         }
-        return null;
+        return null;*/
     }
 
     public Artist addArtist(ArtistCreateDTO artistDTO) {
-        Artist artist = new Artist(++artistId, artistDTO.getName());
-        this.artistList.add(artist);
+        Artist artist = new Artist(artistDTO.getName());
+        //this.artistList.add(artist);
+        em.persist(artist);
         return artist;
     }
 
     public Artist updateArtist(Integer id, ArtistUpdateDTO artistDTO) {
-        Artist artist = this.artistList.get(--id);
+
+        Artist artist = em.find(Artist.class, id);
+        artist.setName(artistDTO.getName());
+
+        //Artist artist = this.artistList.get(--id);
         artist.setName(artistDTO.getName());
         return artist;
     }
 
     public void deleteArtist(Integer id) {
-        this.artistList.remove((int) --id);
+        em.remove(em.find(Artist.class, id));
+        //this.artistList.remove((int) --id);
     }
 }

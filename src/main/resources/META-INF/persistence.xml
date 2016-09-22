@@ -13,5 +13,20 @@
         Automatic schema export has been deliberately disabled. When you want to reload your dataschema, run a
         persistence unit test. Otherwise all your data will disappear whenever you restart Wildfly.
     -->
+    <persistence-unit name="InMemory" transaction-type="JTA">
+        <class>com.realdolmen.course.domain.Artist</class>
+        <class>com.realdolmen.course.domain.Album</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
+            <property name="javax.persistence.jdbc.url"    value="jdbc:h2:mem:test" />
+            <property name="javax.persistence.jdbc.user" value="sa" />
+            <property name="javax.persistence.jdbc.password" value="" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <property name="show_sql" value="true"/>
+            <property name="hibernate.temp.use_jdbc_metadata_defaults" value="false"/>
+        </properties>
+    </persistence-unit>
 
 </persistence>
