@@ -55,10 +55,25 @@ public class ArtistStuff {
                 em.merge(new Album("Blue Wonder Power Milk", "1998", hoover))
             )
         );
+
+        em.persist(new Artist("First Aid Kit"));
+        em.persist(new Artist("Intergalactic Lovers"));
+        em.persist(new Artist("K3"));
+        em.persist(new Artist("Samson & Gert"));
+        em.persist(new Artist("The Rolling Stones"));
+        em.persist(new Artist("The Beatles"));
+        em.persist(new Artist("The Big Blue Something Band"));
+        em.persist(new Artist("The Summer Red Sunset Band"));
     }
 
     public List<Artist> getArtists() {
         return em.createQuery("SELECT a FROM Artist a", Artist.class).getResultList();
+    }
+
+    public List<Artist> getFirst10Artists(){
+        return em.createQuery("SELECT a FROM Artist a", Artist.class)
+                .setMaxResults(10)
+                .getResultList();
     }
 
     public List<Album> getAlbums() {

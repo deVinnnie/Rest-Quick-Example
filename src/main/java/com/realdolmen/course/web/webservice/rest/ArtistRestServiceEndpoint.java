@@ -23,8 +23,13 @@ public class ArtistRestServiceEndpoint {
     UriInfo uriInfo;
 
     @GET
-    public ArtistList findAll() {
-        return new ArtistList(artistsStuff.getArtists());
+    public Response findAll() {
+        int count =  artistsStuff.getArtists().size();
+
+        return Response.ok(new ArtistList(artistsStuff.getFirst10Artists()))
+                .header("X-Total-Count", count)
+                .header("X-Link-Next", "/rest/artists/?page=2")
+                .build();
     }
 
     @GET
