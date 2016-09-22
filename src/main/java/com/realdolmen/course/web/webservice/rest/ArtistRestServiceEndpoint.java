@@ -22,7 +22,6 @@ public class ArtistRestServiceEndpoint {
     @Context
     UriInfo uriInfo;
 
-
     @GET
     public ArtistList findAll() {
         return new ArtistList(artistsStuff.getArtists());
