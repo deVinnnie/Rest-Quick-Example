@@ -13,7 +13,7 @@ import java.util.List;
 @Singleton
 public class ArtistStuff {
 
-    private ArrayList<Artist> artistList;
+    private ArrayList<Artist> artistList = new ArrayList<>();
 
     private int artistId = 0;
 
@@ -21,19 +21,19 @@ public class ArtistStuff {
     public void setUp() {
         this.artistList = new ArrayList<>(
                 Arrays.asList(
-                        new Artist(1, "ABBA"),
-                        new Artist(2, "Fleetwood Mac"),
-                        new Artist(3, "Hooverphonic")
+                        new Artist(++artistId, "ABBA"),
+                        new Artist(++artistId, "Fleetwood Mac"),
+                        new Artist(++artistId, "Hooverphonic")
                 )
         );
 
         artistList.get(0).setAlbums(
                 new ArrayList<>(
                         Arrays.asList(
-                                new Album(1, "Waterloo"),
-                                new Album(2, "The Visitors"),
-                                new Album(3, "Gold"),
-                                new Album(5, "Ring Ring")
+                                new Album(11, "Waterloo"),
+                                new Album(12, "The Visitors"),
+                                new Album(13, "Gold"),
+                                new Album(14, "Ring Ring")
                         )
                 )
         );
@@ -51,7 +51,7 @@ public class ArtistStuff {
         );
 
         for (Album album : artistList.get(2).getAlbums()) {
-            album.setArtist(artistList.get(0));
+            album.setArtist(artistList.get(2));
         }
     }
 
@@ -86,5 +86,9 @@ public class ArtistStuff {
         Artist artist = this.artistList.get(--id);
         artist.setName(artistDTO.getName());
         return artist;
+    }
+
+    public void deleteArtist(Integer id) {
+        this.artistList.remove((int) --id);
     }
 }

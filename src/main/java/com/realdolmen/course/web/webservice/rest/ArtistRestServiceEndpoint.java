@@ -92,5 +92,12 @@ public class ArtistRestServiceEndpoint {
     }
 
 
+    @DELETE
+    @Path("{id : \\d+}")
+    public void delete(@PathParam("id") Integer id){
+        this.artistsStuff.deleteArtist(id);
+    }
+
+
 
 }

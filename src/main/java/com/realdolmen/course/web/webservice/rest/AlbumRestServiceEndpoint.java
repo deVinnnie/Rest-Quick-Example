@@ -32,6 +32,6 @@ public class AlbumRestServiceEndpoint {
     @GET
     @Path("{id : \\d+}")
     public Album find(@PathParam("id") Integer id){
-        return new Album(id, "Waterloo");
+        return artistStuff.albumById(id);
     }
 }
